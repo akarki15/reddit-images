@@ -1,0 +1,60 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Unified App</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+  </head>
+  <body>
+  	<div class="container">
+      <div class="header clearfix">
+      
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li><a href="{{ url_for('frontpage') }}">Front Page</a></li>
+           {% if 'username' in session %}
+            <li><a href="{{ url_for('profile') }}">Profile</a></li>
+            <li><a href="{{ url_for('signout') }}">Sign Out</a></li>
+            {% else %}
+            <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+            <li><a href="{{ url_for('signin') }}">Sign In</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+
+        <h3>Unified</h3>
+      </div>
+
+
+      <div class="jumbotron">        
+      {% block content %}
+      {% endblock %}
+      {% for message in get_flashed_messages() %}
+    <div class=flash>{{ message }}</div>
+  {% endfor %}
+        
+        
+      </div>
+
+    </div> 
+ 	</div>
+    
+
+  </body>
+</html>
