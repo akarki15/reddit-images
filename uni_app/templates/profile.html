@@ -5,6 +5,28 @@
     <h3>This is {{ session['username'] }}'s profile page<h3>
     <!-- {% block post %}
     {% endblock %} -->    
+    <form action="{{ url_for('profile') }}" method=post enctype="multipart/form-data" >
+    {{ form.hidden_tag() }}
+ 
+    {{ form.text.label }}
+    {{ form.text }}
+ 
+    {{ form.tags.label }}
+    {{ form.tags }}
+
+    {{ form.image.label }}
+    {{ form.image }}
+    
+    {{ form.submit }}
+    </form>
+    {% for entry in entries %}
+    <li><h2>{{ entry.title }}</h2>{{ entry.text|safe }}
+  {% else %}
+    <li><em>Unbelievable.  No entries here so far</em>
+  {% endfor %}
+
+
   </div>
   
+
 {% endblock %}
