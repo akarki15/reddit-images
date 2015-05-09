@@ -45,7 +45,7 @@ class SignUpForm(Form):
 		 
 		user = User.query.filter_by(username = self.username.data.lower()).first()		
 		if user:  
-			self.username.errors.append("Username already taken")
+			self.username.errors.append(str(user.username) + "Username already taken")
 		  	return False
 		else:
 			return True

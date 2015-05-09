@@ -17,6 +17,9 @@ def signin():
 			return render_template('signin.html', form=form)
 		else:
 			session['username'] = form.username.data
+			# also store the userID
+			user = User.query.filter_by(username = form.username.data.lower()).first()
+			session['userID'] = user.userID			
       		return redirect(url_for('profile'))
 	elif request.method == 'GET':
 		return render_template('signin.html', form=form)
@@ -35,8 +38,10 @@ def signup():
 		db.session.commit()
 		# hashes the username as an ecrypted ID and stores as a cookie in the user's browser
 		session['username'] = newuser.username
+		user = User.query.filter_by(username = form.username.data.lower()).first()
+		session['userID'] = user.userID			
 		return redirect(url_for('profile'))
-		return "[1] Create a new user [2] sign in the user [3] redirect to the user's profile"
+		
    
   elif request.method == 'GET':
 	return render_template('signup.html', form=form)
@@ -55,7 +60,7 @@ def profile():
 			if form.validate() == False:				
 				return render_template('profile.html', form=form)
 			else:				
-				newpost = Post(form.text.data, 2, form.tags.data)				
+				newpost = Post(form.text.data, session['userID'], form.tags.data)				
 				db.session.add(newpost)
 				
 				file = request.files[form.image.name]				
@@ -88,6 +93,7 @@ def signout():
 		return redirect(url_for('signin'))
 	# remove the cookie stored in the user account
 	session.pop('username', None)
+	session.pop('userID', None)
 	flash("Signed out!")
 	return redirect(url_for('signin'))
 
