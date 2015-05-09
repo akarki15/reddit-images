@@ -1,8 +1,10 @@
+import os
 from uni_app import app
 from flask import Flask, render_template, request, url_for, flash, session, redirect
-from forms import SignInForm, SignUpForm,  CreatePostForm
+from forms import SignInForm, SignUpForm, CreatePostForm
 from models import db, User, Post
-  
+from werkzeug import secure_filename
+from settings import APP_UPLOADS
 
 
 @app.route('/', methods=['GET','POST'])
@@ -41,6 +43,7 @@ def signup():
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile(): 
+
 	form = CreatePostForm()
 	# session gets the encrypted ID and hashes it to get the value i.e. the username
 	user = User.query.filter_by(username = session['username']).first()
@@ -48,18 +51,29 @@ def profile():
 	if user is None:
 		return redirect(url_for('signin'))
 	else:
-		if request.method == 'POST':
-			if form.validate() == False:
-				flash("Post invalid!")		
+		if request.method == 'POST':			
+			if form.validate() == False:				
 				return render_template('profile.html', form=form)
-			else: 				
-				containsImage = 'False'
-				if (form.image.data):
-					containsImage = 'True'
-
-				newpost = Post(form.text.data, form.tags.data, form.image.data)
+			else:				
+				newpost = Post(form.text.data, 2, form.tags.data)				
 				db.session.add(newpost)
+				
+				file = request.files[form.image.name]				
+				if file: 					
+					filename = secure_filename(file.filename)
+					# flush to ge the postID to be used as filename
+					db.session.flush()				
+					filename = str(newpost.postID) + os.path.splitext(filename)[1]
+					newpost.imageURI = filename
+					file.save(os.path.join(APP_UPLOADS, filename))								
+					flash(filename+" uploaded!")		
+					
+					print 'filename:', filename									
+					
 				db.session.commit()
+				
+				flash("posted!")			
+				return redirect(url_for('profile'))
 		elif request.method == 'GET':		
 			# posts = Post.query.filter_by(username = session['username']).first()
 			return render_template('profile.html', form=form)

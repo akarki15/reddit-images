@@ -29,7 +29,7 @@
           <ul class="nav nav-pills pull-right">
             <li><a href="{{ url_for('frontpage') }}">Front Page</a></li>
            {% if 'username' in session %}
-            <li><a href="{{ url_for('profile') }}">Profile</a></li>
+            <li><a href="{{ url_for('profile') }}">{{session['username']}}</a></li>
             <li><a href="{{ url_for('signout') }}">Sign Out</a></li>
             {% else %}
             <li><a href="{{ url_for('signup') }}">Sign Up</a></li>

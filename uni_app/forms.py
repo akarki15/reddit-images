@@ -1,5 +1,6 @@
 from flask.ext.wtf import Form
-from wtforms.fields import TextField, BooleanField, SubmitField,PasswordField, FileField
+from wtforms.fields import TextField, BooleanField, SubmitField,PasswordField
+from flask.ext.wtf.file import FileField, FileRequired, FileAllowed
 from wtforms.validators import Required
 from models import db, User
 
@@ -52,7 +53,7 @@ class SignUpForm(Form):
 class CreatePostForm(Form):
 	text = TextField("Content",validators=[Required("Write something about this post!")])
 	tags = TextField("Tags")
-	image        = FileField(u'Image File', [validators.regexp(u'^[^/\\]\.jpg$')])	
+	image = FileField('Image File', validators = [FileAllowed(['jpg', 'png'], 'Images only!')])		
 	submit = SubmitField("Post!")
 
 	# Constructor calls the Form's default constructor

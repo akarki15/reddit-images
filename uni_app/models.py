@@ -29,12 +29,12 @@ class Post(db.Model):
 	__tablename__ = 'posts'
 	postID = db.Column(db.Integer, primary_key = True)
 	text = db.Column(db.String(1000))
-	imageURI = db.Column(db.String(100))
-	userID = db.Column(db.Integer, nullable=False)
+	imageURI= db.Column(db.String(100))
+	userID = db.Column(db.Integer, db.ForeignKey('users.userID'))
 	tags = db.Column(db.String(500))
 	
-	def __init__(self, text, imageURI, userID, tags):
-		self.text = text.title()
-		self.imageURI = imageURI.title()
-		self.userID = userID.title()
+	def __init__(self, text, userID, tags):
+		self.text = text.title()				
+		# self.imageURI = imageURI.title()
+		self.userID = userID
 		self.tags= tags.title()
