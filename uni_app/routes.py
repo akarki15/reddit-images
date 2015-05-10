@@ -112,8 +112,7 @@ def signout():
 @app.route('/frontpage')
 def frontpage():
  
-	if 'username' not in session:
-		return redirect(url_for('signin'))
+	
 	posts = Post.query.all();
 	for post in posts:
 		post.username = User.query.filter_by(userID = post.userID).first().username				
