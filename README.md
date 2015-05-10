@@ -53,6 +53,10 @@ Create a local MySQL database called uni_database and execute the following sql 
 	PRIMARY KEY(categoryID)
 
 	) ENGINE=INNODB;
+
+Note that the connection settings to mysql are in __init__.py
+	
+	app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/uni_database'
 	
 Run the MySQL server
 
