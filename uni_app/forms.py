@@ -2,7 +2,7 @@ from flask.ext.wtf import Form
 from wtforms.fields import TextField, BooleanField, SubmitField,PasswordField
 from flask.ext.wtf.file import FileField, FileRequired, FileAllowed
 from wtforms.validators import Required
-from models import db, User
+from models import db, User, Category
 
  
 class SignInForm(Form):
@@ -52,9 +52,10 @@ class SignUpForm(Form):
 
 class CreatePostForm(Form):
 	text = TextField("Content",validators=[Required("Write something about this post!")])
-	tags = TextField("Tags")
+	category = TextField("Category")
 	image = FileField('Image File', validators = [FileAllowed(['jpg', 'png'], 'Images only!')])		
 	submit = SubmitField("Post!")
+	categoryID = ""
 
 	# Constructor calls the Form's default constructor
 	def __init__(self, *args, **kwargs):
@@ -64,5 +65,33 @@ class CreatePostForm(Form):
 		# check the form's default validator 
 		if not Form.validate(self):
 		  	return False
-		else:
+		category = Category.query.filter_by(name = self.category.data.lower()).first()				
+		if not category:  
+			self.category.errors.append(str(self.category.data) + " Community does not exist! Type an existing community's name or create one before posting!")
+		  	return False
+		else:			
+			self.categoryID = category.categoryID			
 			return True
+class CreateCommunityForm(Form):			
+	category = TextField("Name",validators=[Required("Community should have a name!")])	
+	submit = SubmitField("Create!")	
+	message = None	
+	# Constructor calls the Form's default constructor
+	def __init__(self, *args, **kwargs):
+		Form.__init__(self, *args, **kwargs)
+	
+	def validate(self):
+		# check the form's default validator 
+		if not Form.validate(self):
+		  	return False
+		queryCategory = Category.query.filter_by(name = self.category.data.lower()).first()				
+		if queryCategory:  
+			self.category.errors.append(str(self.category.data) + " already exists!")
+		  	return False
+		else:						
+			return True
+
+	def getAllCommunities(self):
+		for c in Category.query.all():
+			print c.name
+		return Category.query.all()

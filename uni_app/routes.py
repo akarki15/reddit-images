@@ -1,8 +1,8 @@
 import os
 from uni_app import app
 from flask import Flask, render_template, request, url_for, flash, session, redirect
-from forms import SignInForm, SignUpForm, CreatePostForm
-from models import db, User, Post
+from forms import SignInForm, SignUpForm, CreatePostForm, CreateCommunityForm
+from models import db, User, Post, Category
 from werkzeug import secure_filename
 from settings import APP_UPLOADS
 
@@ -49,18 +49,18 @@ def signup():
 @app.route('/profile', methods=['GET', 'POST'])
 def profile(): 
 
-	form = CreatePostForm()
+	form = CreatePostForm()		
 	# session gets the encrypted ID and hashes it to get the value i.e. the username
 	user = User.query.filter_by(username = session['username']).first()
 
 	if user is None:
 		return redirect(url_for('signin'))
 	else:
-		if request.method == 'POST':			
+		if request.method == 'POST':						
 			if form.validate() == False:				
-				return render_template('profile.html', form=form)
+				return render_template('profile.html', form=form,communityform=CreateCommunityForm())
 			else:				
-				newpost = Post(form.text.data, session['userID'], form.tags.data)				
+				newpost = Post(form.text.data, session['userID'], form.categoryID)				
 				db.session.add(newpost)
 				
 				file = request.files[form.image.name]				
@@ -72,8 +72,7 @@ def profile():
 					newpost.imageURI = filename
 					file.save(os.path.join(APP_UPLOADS, filename))								
 					flash(filename+" uploaded!")		
-					
-					print 'filename:', filename									
+										
 					
 				db.session.commit()
 				
@@ -81,10 +80,24 @@ def profile():
 				return redirect(url_for('profile'))
 		elif request.method == 'GET':		
 			# posts = Post.query.filter_by(username = session['username']).first()
-			return render_template('profile.html', form=form)
+			return render_template('profile.html', form=form, communityform=CreateCommunityForm())
 
-	
-	
+@app.route('/community', methods=['GET', 'POST'])
+def community():	
+	communityform= CreateCommunityForm()
+
+	user = User.query.filter_by(username = session['username']).first()
+	if user is None:
+		return redirect(url_for('signin'))
+	else:
+		if request.method == 'POST':
+			newCategory = Category(communityform.category.data.lower())					
+			db.session.add(newCategory)
+			db.session.commit()			
+			communityform.message= "Community created!"			
+		# returns all the community list
+		# elif request.method == 'GET':
+		return render_template('profile.html', form=CreatePostForm(), communityform=communityform)
 
 @app.route('/signout')
 def signout():

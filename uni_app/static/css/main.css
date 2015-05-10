@@ -165,3 +165,27 @@ form input#password {
 form input#password {
   margin-bottom: 10px;
 }
+
+form input#text
+{ width: 400;
+  height: 100;
+}
+
+form input#tags{
+  width: 400;
+}
+
+.postForm{
+  width: 520px;
+}
+
+#submit{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+hr{
+  height: 1px;  
+  background-color: #123455;
+  border: none;
+}

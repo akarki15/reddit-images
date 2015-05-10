@@ -21,8 +21,6 @@ class User(db.Model):
 	self.hashpass = generate_password_hash(password)
    
   def check_password(self, password):
-  	print "wor"
-	print check_password_hash(self.hashpass, password)
 	return check_password_hash(self.hashpass, password)
 
 class Post(db.Model):
@@ -31,10 +29,21 @@ class Post(db.Model):
 	text = db.Column(db.String(1000))
 	imageURI= db.Column(db.String(100))
 	userID = db.Column(db.Integer, db.ForeignKey('users.userID'))
-	tags = db.Column(db.String(500))
+	categoryID = db.Column(db.Integer, db.ForeignKey('categories.categoryID'))
 	
-	def __init__(self, text, userID, tags):
+	def __init__(self, text, userID, categoryID):
 		self.text = text.title()				
 		# self.imageURI = imageURI.title()
 		self.userID = userID
-		self.tags= tags.title()
+		self.categoryID= categoryID
+
+
+class Category(db.Model):
+	__tablename__ = 'categories'
+	categoryID = db.Column(db.Integer, primary_key = True)
+	name = db.Column(db.String(1000))
+	
+	def __init__(self, name):
+		self.name = name				
+		
+

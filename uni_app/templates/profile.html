@@ -1,43 +1,61 @@
 {% extends "layout.html" %}
 {% block content %}
-  <div class="jumbo">
-        <h2>Profile<h2>
-        <h3>This is {{ session['username'] }}'s profile page<h3>
-        <!-- {% block post %}
-        {% endblock %} -->    
+  <div class="jumbo">                
+        <h4> Submit new post </h4>
         <form action="{{ url_for('profile') }}" method=post enctype="multipart/form-data" >
-        {{ form.hidden_tag() }}
-     
+        {{ form.hidden_tag() }}                
+        
         {{ form.text.label }}
         {{ form.text }}
      
-        {{ form.tags.label }}
-        {{ form.tags }}
-
+        {{ form.category.label }}
+        {{ form.category }}
+        
         {{ form.image.label }}
         {{ form.image }}
         
         {{ form.submit }}
-        </form>
-
-        {% for entry in entries %}
-        <li><h2>{{ entry.title }}</h2>{{ entry.text|safe }}
-        {% else %}
-        <li>Unbelievable.  No entries here so far
-        {% endfor %}    
+        </form>    
     </div>
     <!-- error messages -->    
     {% for message in form.text.errors %}
     <div class="flash">{{ message }}</div>
     {% endfor %}
 
-    {% for message in form.tags.errors %}
+    {% for message in form.category.errors %}
     <div class="flash">{{ message }}</div>
     {% endfor %}
-
+    
     {% for message in form.image.errors %}
     <div class="flash">{{ message }}</div>
-    {% endfor %}
-  
+    {% endfor %}  
+{% endblock %}
 
+{% block communityContent %}
+    <div class="jumbo">
+    <h3>Communities</h3> 
+    <p>
+
+    <form action="{{ url_for('community') }}" method=post enctype="multipart/form-data" >
+            <h5>Create</h5> 
+        {{ form.hidden_tag() }}                        
+        {{ communityform.category.label }}
+        {{ communityform.category }}
+                 
+        {{ communityform.submit }}
+    </form>      
+    </p>
+    <hr>
+        {% if communityform.message  %}
+        <div class=flash>{{ communityform.message }}</div>    
+        {%endif%}
+        <p>
+            <h5> Existing Communities </h5>
+            <ul>
+            {% for c in communityform.getAllCommunities() %}            
+            <li>{{ c.name }}</li>
+            {% endfor %}  
+        </ul>
+        </p>
+    </div>
 {% endblock %}
