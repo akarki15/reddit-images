@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+ 
+{% block content %}
+	{% for post in posts %}
+	<div class="jumbotron ">
+	<p>
+		<h4>{{ post.text }}</h4>
+		{{post.username}} posted in {{post.communityName}}
+		
+		{% if post.fullImageURI %}		
+		<img src = {{ post.fullImageURI }} width="300">
+		{% endif %}
+	</p>
+	
+	
+	</div>
+	{% endfor %}
+   
+{% endblock %}

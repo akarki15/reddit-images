@@ -1,6 +1,6 @@
 import os
 from uni_app import app
-from flask import Flask, render_template, request, url_for, flash, session, redirect
+from flask import Flask, render_template, request, url_for, flash, session, redirect, send_from_directory
 from forms import SignInForm, SignUpForm, CreatePostForm, CreateCommunityForm
 from models import db, User, Post, Category
 from werkzeug import secure_filename
@@ -22,7 +22,7 @@ def signin():
 			session['userID'] = user.userID			
       		return redirect(url_for('profile'))
 	elif request.method == 'GET':
-		return render_template('signin.html', form=form)
+		return render_template('signin.html', form=form,communityform=CreateCommunityForm())
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -44,7 +44,7 @@ def signup():
 		
    
   elif request.method == 'GET':
-	return render_template('signup.html', form=form)
+	return render_template('signup.html', form=form,communityform=CreateCommunityForm())
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile(): 
@@ -85,7 +85,6 @@ def profile():
 @app.route('/community', methods=['GET', 'POST'])
 def community():	
 	communityform= CreateCommunityForm()
-
 	user = User.query.filter_by(username = session['username']).first()
 	if user is None:
 		return redirect(url_for('signin'))
@@ -115,10 +114,14 @@ def frontpage():
  
 	if 'username' not in session:
 		return redirect(url_for('signin'))
-	# remove the cookie stored in the user account
-	session.pop('username', None)
-	flash("Signed out!")
-	return redirect(url_for('signin'))
+	posts = Post.query.all();
+	for post in posts:
+		post.username = User.query.filter_by(userID = post.userID).first().username				
+		post.communityName = Category.query.filter_by(categoryID = post.categoryID).first().name				
+		if post.imageURI != None:
+			post.fullImageURI = url_for('static',filename=("img/"+str(post.imageURI)))		
+	return render_template('frontpage.html', posts=posts, communityform=CreateCommunityForm())
+
 
 if __name__ == '__main__':
   app.run(debug=True)

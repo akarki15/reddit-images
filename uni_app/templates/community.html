@@ -1,0 +1,29 @@
+{% block communityContent %}
+    <div class="jumbo">
+    <h3>Communities</h3> 
+    {% if session['username']  %}
+    <p>    
+    <form action="{{ url_for('community') }}" method=post enctype="multipart/form-data" >
+            <h5>Create</h5> 
+        {{ communityform.hidden_tag() }}                        
+        {{ communityform.category.label }}
+        {{ communityform.category }}
+                 
+        {{ communityform.submit }}
+    </form>          
+    </p>
+    {% endif %}
+    <hr>
+        {% if communityform.message  %}
+        <div class=flash>{{ communityform.message }}</div>    
+        {%endif%}
+        <p>
+            <h5> Existing Communities </h5>
+            <ul>
+            {% for c in communityform.getAllCommunities() %}            
+            <li>{{ c.name }}</li>
+            {% endfor %}  
+        </ul>
+        </p>
+    </div>
+{% endblock %}
