@@ -53,3 +53,7 @@ Create a local MySQL database and create the following tables:
 	PRIMARY KEY(categoryID)
 
 	) ENGINE=INNODB;
+	
+Run the MySQL server
+
+Python runserver.py
