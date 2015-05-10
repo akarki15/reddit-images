@@ -11,7 +11,10 @@ Install following dependencies:
 	SQLAlchemy==1.0.3
 	Werkzeug==0.10.4
 	WTForms==2.0.2
-
+Start a local mysql server
+	
+	mysql.server start
+	
 Create a local MySQL database called uni_database and execute the following sql commands to create the following tables: 
 
 	CREATE TABLE users (
