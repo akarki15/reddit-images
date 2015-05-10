@@ -1,3 +1,7 @@
+Setup Instructions: 
+
+Clone this repo
+
 Install following dependencies: 
 
 	Flask==0.10.1
@@ -11,6 +15,7 @@ Install following dependencies:
 	SQLAlchemy==1.0.3
 	Werkzeug==0.10.4
 	WTForms==2.0.2
+	
 Start a local mysql server
 	
 	mysql.server start
