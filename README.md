@@ -12,7 +12,7 @@ Install following dependencies:
 	Werkzeug==0.10.4
 	WTForms==2.0.2
 
-Create a local MySQL database and create the following tables: 
+Create a local MySQL database called uni_database and execute the following sql commands to create the following tables: 
 
 	CREATE TABLE users (
 	userID INT NOT NULL AUTO_INCREMENT,
