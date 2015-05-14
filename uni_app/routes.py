@@ -1,10 +1,15 @@
 import os
-from uni_app import app
 from flask import Flask, render_template, request, url_for, flash, session, redirect, send_from_directory
 from forms import SignInForm, SignUpForm, CreatePostForm, CreateCommunityForm
 from models import db, User, Post, Category
 from werkzeug import secure_filename
 from settings import APP_UPLOADS
+
+
+app = Flask(__name__)
+app.secret_key = '021454044'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/uni_database'
+
 
 
 @app.route('/', methods=['GET','POST'])
@@ -121,6 +126,7 @@ def frontpage():
 			post.fullImageURI = url_for('static',filename=("img/"+str(post.imageURI)))		
 	return render_template('frontpage.html', posts=posts, communityform=CreateCommunityForm())
 
+if __name__ == '__main__':	
+	db.init_app(app)
+	app.run(debug=True)
 
-if __name__ == '__main__':
-  app.run(debug=True)
