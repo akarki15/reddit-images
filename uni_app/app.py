@@ -10,7 +10,9 @@ app = Flask(__name__)
 app.secret_key = '021454044'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/uni_database'
 
-
+@app.route('/test', methods=['GET','POST'])
+def test():
+	return "Test successful!"
 
 @app.route('/', methods=['GET','POST'])
 def signin():	
