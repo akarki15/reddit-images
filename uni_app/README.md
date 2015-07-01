@@ -1,3 +1,9 @@
+Screenshots: 
+![alt tag](https://raw.githubusercontent.com/akarki15/uni_app/master/screenshot/Screen%20Shot%202015-07-01%20at%2010.24.00%20AM.png)
+![alt tag](https://raw.githubusercontent.com/akarki15/uni_app/master/screenshot/Screen%20Shot%202015-07-01%20at%2010.24.14%20AM.png)
+![alt tag](https://raw.githubusercontent.com/akarki15/uni_app/master/screenshot/Screen%20Shot%202015-07-01%20at%2010.25.34%20AM.png)
+![alt tag](https://raw.githubusercontent.com/akarki15/uni_app/master/screenshot/Screen%20Shot%202015-07-01%20at%2010.24.30%20AM.png)
+
 Setup Instructions: 
 
 Clone this repo
